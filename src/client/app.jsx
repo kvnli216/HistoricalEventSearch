@@ -1,5 +1,8 @@
 import React from 'react';
 import axios from 'axios';
+import ReactPaginate from 'react-paginate';
+import Search from './Search.jsx';
+import EventList from './EventList.jsx';
 
 class App extends React.Component {
   constructor(props) {
@@ -7,10 +10,13 @@ class App extends React.Component {
 
     this.state = {
       events: [],
+      offset: 0,
+      eventCount: 0,
     };
 
     this.updateEvents = this.updateEvents.bind(this);
-    this.getEvents = this.getEvents.bind(this);
+    this.updateEventCount = this.updateEventCount.bind(this);
+    this.handlePageClick = this.handlePageClick.bind(this);
   };
 
   updateEvents(data) {
@@ -19,37 +25,43 @@ class App extends React.Component {
     });
   }
 
-  getEvents() {
-    axios.get('http://localhost:3000/events')
-      .then(events => {
-        // isolate first 10 results
-        let eventList = [];
-        for (let i = 0; i < 10; i++) {
-          eventList.push(events.data[i]);
-        }
-        this.updateEvents(eventList);
-        console.log('pachoo');
-      })
-      .catch(err => {
-        console.log('ERR on data GET', err);
-      })
+  updateEventCount(num) {
+    this.setState({
+      eventCount: num
+    });
+  }
+  
+  componentDidMount() {
+    // this.getEvents();
   }
 
-  componentDidMount() {
-    this.getEvents();
-  }
+  handlePageClick(data) {
+    let selected = data.selected;
+    let offset = Math.ceil(selected * this.props.perPage);
+
+    // this.setState({ offset: offset }, () => {
+    //   this.getEvents();
+    // });
+  };
 
   render() {
     return (
       <div>
-        <ul>
-          {this.state.events.map(event => {  
-            let output = event.description;
-            return (
-              <li>{output}</li>
-            );
-          })}
-        </ul>
+        <Search events={this.state.events} eventCount={this.state.eventCount} updateEvents={this.updateEvents} updateEventCount={this.updateEventCount} />
+        <EventList events={this.state.events}/>
+        <ReactPaginate
+          previousLabel={'previous'}
+          nextLabel={'next'}
+          breakLabel={'...'}
+          breakClassName={'break-me'}
+          pageCount={Math.ceil(this.state.eventCount / this.props.perPage)}
+          marginPagesDisplayed={2}
+          pageRangeDisplayed={5}
+          onPageChange={this.handlePageClick}
+          containerClassName={'pagination'}
+          subContainerClassName={'pages pagination'}
+          activeClassName={'active'}
+        />
       </div>
     );
   }
