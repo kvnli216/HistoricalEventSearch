@@ -2,4 +2,4 @@ import reactDOM from 'react-dom';
 import React from 'react';
 import App from './client/app.jsx';
 
-reactDOM.render(<App />, document.getElementById('app'));
+reactDOM.render(<App perPage={10}/>, document.getElementById('app'));
