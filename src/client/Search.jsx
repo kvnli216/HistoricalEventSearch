@@ -20,23 +20,17 @@ class Search extends React.Component {
   }
 
   handleSubmit(e) {
+    const { form } = this.state;
+
     e.preventDefault();
-    console.log('handlesubmit', this.state.form);
-    axios.get(`http://localhost:3000/events?q=${this.state.form}`)
-      .then(events => {
-        let data = events.data;
-        this.props.updateEvents(data);
-        this.props.updateEventCount(data.length);
-      })
-      .catch(err => {
-        console.log('ERR on data GET', err);
-      })
+    this.props.updateSearchText(form);
+    this.props.requestEvents();
   }
 
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
-        <input type='string' value={this.state.form} onChange={this.updateForm}></input>
+        <input type='text' value={this.state.form} onChange={this.updateForm}></input>
       </form>
     );
   }

@@ -9,7 +9,7 @@ class EventList extends React.Component {
     });
 
     return (
-      <div id="project-comments" className="commentList">
+      <div id="EventList" className="EventList">
         <ul>{events}</ul>
       </div>
     );
