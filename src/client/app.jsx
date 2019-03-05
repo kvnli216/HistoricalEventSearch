@@ -9,7 +9,7 @@ class App extends React.Component {
     super(props);
 
     this.state = {
-      events: [{description: 'Fill in the search form to look up historical events!'}],
+      events: [{description: 'Fill in the search form to look up historical events! (e.g. king, pilgrim...etc)'}],
       eventCount: 0,
       pageNumber: 1,
       searchText: '',
@@ -59,12 +59,12 @@ class App extends React.Component {
   };
 
   componentDidMount() {
-    // this.getEvents();
   }
 
   render() {
     return (
-      <div>
+      <div className='container'>
+        <h1 className='title'>Historical Event Database</h1>
         <Search 
           events={this.state.events}
           eventCount={this.state.eventCount}

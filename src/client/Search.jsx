@@ -29,7 +29,10 @@ class Search extends React.Component {
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
-        <input type='text' value={this.state.form} onChange={this.updateForm}></input>
+        <label>
+          Search Form: 
+          <input type='text' value={this.state.form} onChange={this.updateForm}></input>
+        </label>
       </form>
     );
   }
